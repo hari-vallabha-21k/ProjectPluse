@@ -3,19 +3,35 @@ export default function Hero() {
     <section className="relative overflow-hidden pt-16 pb-24 lg:pt-24 lg:pb-40 bg-white dark:bg-[#101122]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-4xl mx-auto">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 bg-primary/10 dark:bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-semibold mb-8">
+            <span className="material-symbols-outlined text-[18px]">
+              rocket_launch
+            </span>
+            Built for modern teams
+          </div>
+
           <h1 className="text-5xl md:text-7xl font-black text-slate-900 dark:text-white leading-tight tracking-tight mb-8">
             Manage projects. Assign tasks.{" "}
             <span className="text-primary">Track progress.</span>
           </h1>
           <p className="text-lg md:text-xl text-slate-500 dark:text-slate-400 leading-relaxed mb-10 max-w-2xl mx-auto">
-            ProjectPulse helps teams stay organized and deliver projects faster.
+            ProjectPulse is an all-in-one project management platform that helps
+            teams plan, collaborate, and deliver work on time — from small
+            startups to growing enterprises.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="#contact"
+              href="/signup"
               className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white px-10 py-5 rounded-2xl text-base font-bold transition-all shadow-xl shadow-primary/25"
             >
-              Request Demo
+              Get Started — It&apos;s Free
+            </a>
+            <a
+              href="#features"
+              className="w-full sm:w-auto border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-10 py-5 rounded-2xl text-base font-bold transition-all"
+            >
+              See How It Works
             </a>
           </div>
         </div>

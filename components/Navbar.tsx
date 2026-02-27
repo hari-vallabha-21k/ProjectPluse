@@ -1,11 +1,32 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import ThemeToggle from "@/components/ThemeToggle";
+import { supabase } from "@/lib/supabaseClient";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      setIsLoggedIn(!!session);
+    };
+    checkSession();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-100 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md">
@@ -35,23 +56,41 @@ export default function Navbar() {
             >
               Contact
             </a>
-            <Link
-              href="/login"
-              className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-primary transition-colors"
-            >
-              Login
-            </Link>
+            {isLoggedIn ? (
+              <Link
+                href="/dashboard/manager"
+                className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-primary transition-colors"
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-primary transition-colors"
+              >
+                Login
+              </Link>
+            )}
           </nav>
 
           {/* CTA + Theme Toggle */}
           <div className="hidden md:flex items-center gap-3">
             <ThemeToggle />
-            <a
-              href="#contact"
-              className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl text-sm font-bold transition-all shadow-md shadow-primary/20"
-            >
-              Request Demo
-            </a>
+            {isLoggedIn ? (
+              <Link
+                href="/dashboard/manager"
+                className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl text-sm font-bold transition-all shadow-md shadow-primary/20"
+              >
+                Go to Dashboard
+              </Link>
+            ) : (
+              <Link
+                href="/signup"
+                className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl text-sm font-bold transition-all shadow-md shadow-primary/20"
+              >
+                Get Started
+              </Link>
+            )}
           </div>
 
           {/* Mobile hamburger */}
@@ -102,18 +141,29 @@ export default function Navbar() {
             >
               Contact
             </a>
-            <Link
-              href="/login"
-              className="block text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-primary"
-            >
-              Login
-            </Link>
-            <a
-              href="#contact"
-              className="inline-block bg-primary text-white px-6 py-3 rounded-xl text-sm font-bold"
-            >
-              Request Demo
-            </a>
+            {isLoggedIn ? (
+              <Link
+                href="/dashboard/manager"
+                className="block text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-primary"
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="block text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-primary"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/signup"
+                  className="inline-block bg-primary text-white px-6 py-3 rounded-xl text-sm font-bold"
+                >
+                  Get Started
+                </Link>
+              </>
+            )}
           </div>
         )}
       </div>
